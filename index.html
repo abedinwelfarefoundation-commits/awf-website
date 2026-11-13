@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Abedin Welfare Foundation — a community welfare initiative supporting education, food assistance and community care in Bihar, India.">
+  <meta name="theme-color" content="#123d35">
+  <title>Abedin Welfare Foundation | Together, We Can Change Lives</title>
+  <style>
+    :root{--green:#123d35;--green2:#1d5a4d;--mint:#eaf3ee;--gold:#d9aa50;--ink:#172522;--muted:#64736e;--paper:#fbfcfa;--white:#fff;--line:#e2eae5}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65}
+    a{color:inherit} .wrap{width:min(1120px,92%);margin:auto}
+    header{background:rgba(18,61,53,.97);color:white;position:sticky;top:0;z-index:10;box-shadow:0 4px 18px #09231d22}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;letter-spacing:.04em;line-height:1.2}
+    .mark{width:43px;height:43px;border:1px solid #ffffff66;border-radius:14px;display:grid;place-items:center;color:var(--gold);font-size:23px}
+    .brand small{display:block;font-size:10px;color:#c7ddd4;font-weight:600;letter-spacing:.16em;margin-top:4px}
+    nav{display:flex;gap:22px;align-items:center} nav a{text-decoration:none;color:#e6f0eb;font-size:14px;font-weight:600} nav a:hover{color:var(--gold)}
+    .menu{display:none;background:transparent;color:white;border:1px solid #ffffff66;border-radius:10px;padding:8px 12px;font-size:20px}
+    .hero{background:radial-gradient(circle at 82% 15%,#2b6b5b 0,transparent 30%),linear-gradient(125deg,#102f2a,#17483d 65%,#1d5a4d);color:white;padding:92px 0 86px;overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;width:360px;height:360px;border:1px solid #ffffff22;border-radius:50%;right:-110px;bottom:-190px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}
+    .eyebrow{color:#f0cb7d;text-transform:uppercase;letter-spacing:.19em;font-size:12px;font-weight:800}
+    h1{font-size:clamp(40px,6vw,68px);line-height:1.06;max-width:780px;margin:18px 0 20px;letter-spacing:-.04em}
+    .hero p{font-size:18px;max-width:680px;color:#e0eee7;margin:0 0 28px}
+    .actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;border:1px solid transparent}
+    .primary{background:var(--gold);color:#1c2b25}.secondary{border-color:#ffffff88;color:white}
+    section{padding:76px 0}.section-head{max-width:720px;margin-bottom:32px}.section-head h2{font-size:clamp(30px,4vw,42px);line-height:1.15;margin:8px 0 12px;color:var(--green);letter-spacing:-.03em}.section-head p{color:var(--muted);margin:0}
+    .kicker{color:var(--green2);font-size:12px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
+    .intro{display:grid;grid-template-columns:1.1fr .9fr;gap:38px;align-items:center}
+    .intro-card{background:var(--mint);border:1px solid var(--line);border-radius:26px;padding:30px}
+    .intro-card strong{display:block;color:var(--green);font-size:21px;margin-bottom:8px}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.pill{background:white;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--green);font-size:12px;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:white;border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 10px 30px #183a2d08}
+    .icon{width:48px;height:48px;border-radius:15px;background:var(--mint);display:grid;place-items:center;font-size:23px;margin-bottom:17px}
+    .card h3{margin:0 0 8px;color:var(--green);font-size:21px}.card p{margin:0;color:var(--muted);font-size:14px}
+    .bilingual{display:block;color:#40564e;margin-top:10px;font-size:14px}
+    .soft{background:#f0f5f1}
+    .founder{display:grid;grid-template-columns:.7fr 1.3fr;gap:28px;align-items:stretch}
+    .founder-mark{border-radius:24px;background:linear-gradient(145deg,#123d35,#2c6b5a);min-height:250px;display:grid;place-items:center;color:#f0cb7d;font-size:76px}
+    .founder-copy{padding:28px;background:white;border:1px solid var(--line);border-radius:24px}
+    .founder-copy h3{font-size:28px;color:var(--green);margin:4px 0}.role{color:var(--green2);font-weight:800;font-size:13px}
+    .notice{margin-top:18px;padding:14px 16px;background:#fff8e9;border-left:4px solid var(--gold);border-radius:8px;color:#574725;font-size:13px}
+    .contact{background:var(--green);color:white}.contact .section-head h2{color:white}.contact .section-head p{color:#d5e5dd}
+    .contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .contact-item{padding:20px;border:1px solid #ffffff30;border-radius:17px;background:#ffffff0b}
+    .contact-item small{display:block;color:#bcd5ca;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:800;margin-bottom:5px}
+    .contact-item a,.contact-item span{color:white;text-decoration:none;overflow-wrap:anywhere;font-weight:600}
+    .contact-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+    footer{background:#0c2924;color:#c8d9d1;padding:25px 0;font-size:13px}
+    .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.foot strong{color:white}
+    .center{text-align:center}.center .section-head{margin-inline:auto}
+    @media(max-width:760px){.menu{display:block}nav{display:none;position:absolute;top:76px;left:0;right:0;background:var(--green);padding:18px 4%;flex-direction:column;align-items:flex-start}nav.open{display:flex}.hero{padding:70px 0}.intro,.founder{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}section{padding:58px 0}.founder-mark{min-height:180px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#home"><span class="mark">♡</span><span>ABEDIN WELFARE FOUNDATION<small>COMMUNITY WELFARE INITIATIVE</small></span></a>
+    <button class="menu" aria-label="Open navigation" onclick="document.querySelector('nav').classList.toggle('open')">☰</button>
+    <nav>
+      <a href="#home">Home</a><a href="#about">About</a><a href="#activities">Activities</a><a href="#founder">Founder</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero" id="home">
+    <div class="wrap">
+      <div class="eyebrow">Education · Food Support · Community Welfare</div>
+      <h1>Together, We Can Change Lives.</h1>
+      <p>Building hope through education, food assistance and community care. Join us in supporting children, families and people in need.</p>
+      <div class="actions"><a class="btn primary" href="#activities">Explore Our Work</a><a class="btn secondary" href="https://wa.me/918521610103" target="_blank" rel="noopener">Contact Us on WhatsApp</a></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap intro">
+      <div>
+        <div class="kicker">Who we are · हम कौन हैं</div>
+        <div class="section-head"><h2>Small acts of kindness can create meaningful change.</h2>
+          <p>Abedin Welfare Foundation (AWF) is a community welfare initiative founded by Mohammad Zainul Abedin. It aims to support underprivileged children and families through education, food assistance and humanitarian activities.</p>
+        </div>
+        <p lang="hi">अबेदिन वेलफेयर फाउंडेशन (AWF) एक सामाजिक कल्याण पहल है। इसका उद्देश्य शिक्षा, भोजन सहायता और मानवीय गतिविधियों के माध्यम से जरूरतमंद बच्चों और परिवारों की मदद करना है।</p>
+      </div>
+      <div class="intro-card">
+        <strong>Our Vision | हमारा दृष्टिकोण</strong>
+        <p>A society where every child has the opportunity to learn and every person is treated with dignity.</p>
+        <p lang="hi">ऐसा समाज जहाँ हर बच्चे को सीखने का अवसर मिले और हर व्यक्ति के साथ सम्मान का व्यवहार हो।</p>
+        <div class="pill-row"><span class="pill">Education</span><span class="pill">Food Support</span><span class="pill">Community Care</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft" id="activities">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">What we do · हमारी गतिविधियाँ</div>
+        <h2>Our Areas of Work</h2>
+        <p>Our current efforts focus on practical support for children and people in need.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><div class="icon">📚</div><h3>Education Support</h3><p>Free learning support for underprivileged children.</p><span class="bilingual" lang="hi">जरूरतमंद बच्चों को निःशुल्क शिक्षा और पढ़ाई में सहायता।</span></article>
+        <article class="card"><div class="icon">🍲</div><h3>Food Distribution</h3><p>Food and ration assistance for hungry and needy people.</p><span class="bilingual" lang="hi">भूखे और जरूरतमंद लोगों को भोजन एवं राशन सहायता।</span></article>
+        <article class="card"><div class="icon">✏️</div><h3>Educational Materials</h3><p>Distribution of notebooks, pens and pencils to support children's education.</p><span class="bilingual" lang="hi">बच्चों की पढ़ाई के लिए कॉपी, पेन और पेंसिल का वितरण।</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="founder">
+    <div class="wrap">
+      <div class="section-head"><div class="kicker">Leadership · नेतृत्व</div><h2>Meet Our Founder</h2></div>
+      <div class="founder">
+        <div class="founder-mark" aria-hidden="true">♡</div>
+        <div class="founder-copy">
+          <div class="role">FOUNDER</div><h3>Mohammad Zainul Abedin</h3>
+          <p>Abedin Welfare Foundation was started with a commitment to support underprivileged children and families through education, food assistance and community welfare.</p>
+          <p lang="hi">इस सामाजिक पहल की शुरुआत जरूरतमंद बच्चों और परिवारों की शिक्षा, भोजन सहायता और सामाजिक कल्याण के माध्यम से मदद करने के संकल्प के साथ की गई।</p>
+          <p><em>“Small acts of kindness can create meaningful change.”</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft center">
+    <div class="wrap">
+      <div class="section-head"><div class="kicker">Get involved · साथ जुड़ें</div><h2>Be a Part of the Change</h2><p>Share your time, skills and ideas to support community welfare activities.</p><p lang="hi">समाज सेवा की गतिविधियों में सहयोग देने के लिए अपने समय, कौशल और विचारों के साथ जुड़ें।</p></div>
+      <a class="btn primary" href="https://wa.me/918521610103" target="_blank" rel="noopener">Become a Volunteer</a>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="section-head"><div class="eyebrow">Contact · संपर्क</div><h2>Let's Connect With Us</h2><p>For volunteering, collaboration and general enquiries, please contact us.</p><p lang="hi">स्वयंसेवा, सहयोग और सामान्य जानकारी के लिए हमसे संपर्क करें।</p></div>
+      <div class="contact-grid">
+        <div class="contact-item"><small>Email</small><a href="mailto:abedinwelfarefoundation@gmail.com">abedinwelfarefoundation@gmail.com</a></div>
+        <div class="contact-item"><small>WhatsApp</small><a href="https://wa.me/918521610103" target="_blank" rel="noopener">+91 8521610103</a></div>
+        <div class="contact-item"><small>Founder</small><span>Mohammad Zainul Abedin</span></div>
+        <div class="contact-item"><small>Location</small><span>Muzaffarpur &amp; East Champaran, Bihar, India</span></div>
+      </div>
+      <div class="contact-actions">
+        <a class="btn primary" href="https://wa.me/918521610103" target="_blank" rel="noopener">WhatsApp Us</a>
+        <a class="btn secondary" href="https://www.instagram.com/abedinwelfarefoundation?mdxt=dzZtNGozcTdkaHRx" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn secondary" href="https://www.facebook.com/share/1L3A5GD2xh/" target="_blank" rel="noopener">Facebook</a>
+        <a class="btn secondary" href="mailto:abedinwelfarefoundation@gmail.com">Send Email</a>
+      </div>
+      <div class="notice">Transparency note: Abedin Welfare Foundation is currently an unregistered community welfare initiative. It is not presently registered as a Trust, Society or Section 8 Company and does not claim 12A or 80G approval. Please contact us for information about our activities.</div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap foot"><div><strong>ABEDIN WELFARE FOUNDATION</strong><br>Together, We Can Change Lives.</div><div>Muzaffarpur &amp; East Champaran, Bihar, India.<br>© <span id="year"></span> AWF. All rights reserved.</div></div></footer>
+<script>document.getElementById('year').textContent=new Date().getFullYear();document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav').classList.remove('open')));</script>
+</body>
+</html>
