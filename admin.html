@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#073d32"><title>AWF Media Admin</title>
+<style>
+:root{--g:#073d32;--g2:#0b5142;--gold:#e5b84f;--paper:#fbfdfb;--line:#dce9e1;--muted:#62756d}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:#17352d;font:16px/1.55 system-ui,Arial,sans-serif}
+header{background:var(--g);color:#fff;padding:18px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+header strong{letter-spacing:.04em}main{width:min(760px,92%);margin:32px auto}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;margin:18px 0;box-shadow:0 12px 30px #073d3210}
+h1{font-size:28px;margin:0 0 8px;color:var(--g)}h2{font-size:20px;margin:0 0 14px;color:var(--g)}
+p{color:var(--muted)}label{display:block;font-weight:750;font-size:13px;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd9d0;border-radius:10px;font:inherit;background:white;color:#17352d}
+textarea{min-height:85px;resize:vertical}
+button,.button{border:0;border-radius:999px;padding:12px 18px;background:var(--gold);color:#17352d;font-weight:850;font-size:14px;cursor:pointer}
+button.secondary{background:#edf5ef;color:var(--g);border:1px solid var(--line)}
+button:disabled{opacity:.55;cursor:wait}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.status{font-size:13px;margin-top:12px;min-height:22px;color:var(--g2)}.hint{font-size:12px;color:var(--muted)}
+.hidden{display:none!important}.item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.item span{font-size:13px;font-weight:700}.danger{background:#fae9e7;color:#8b2821}
+</style>
+</head>
+<body>
+<header><strong>ABEDIN WELFARE FOUNDATION</strong><a href="index.html" style="color:#fff">View website ↗</a></header>
+<main>
+  <div class="panel">
+    <h1>AWF Media Admin</h1>
+    <p>Sign in to publish activity photos and videos to the website. Only the AWF team account can upload.</p>
+    <div id="login-box">
+      <label for="email">Admin email</label><input id="email" type="email" autocomplete="username" placeholder="Your Supabase admin email">
+      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Your Supabase account password">
+      <div class="row" style="margin-top:16px"><button id="login">Sign in</button></div>
+    </div>
+    <div id="signed-box" class="hidden"><div class="row"><span id="who" class="hint"></span><button id="logout" class="secondary">Sign out</button></div></div>
+    <div id="status" class="status" role="status"></div>
+  </div>
+  <div id="upload-box" class="panel hidden">
+    <h2>Upload a new activity</h2>
+    <label for="file">Photo or video</label><input id="file" type="file" accept="image/*,video/mp4,video/webm,video/quicktime">
+    <p class="hint">Your current Storage bucket limit is 50 MB per file. Keep videos short for faster uploads.</p>
+    <label for="title">Title</label><input id="title" maxlength="100" placeholder="e.g. Food Support Drive">
+    <label for="category">Category</label>
+    <select id="category"><option>Education Support</option><option>Food Support</option><option>Healthcare Support</option><option>Human Rights Awareness</option><option>Self-Defence Training</option><option>Community Welfare</option></select>
+    <label for="description">Short description (optional)</label><textarea id="description" maxlength="500" placeholder="Write a short note about this activity"></textarea>
+    <div class="row" style="margin-top:16px"><button id="publish">Upload &amp; Publish</button></div>
+    <div class="hint" style="margin-top:10px">Published items appear automatically in the Activity Gallery on your website.</div>
+  </div>
+  <div id="manage-box" class="panel hidden"><h2>Published activities</h2><div id="items" class="hint">Loading…</div></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
+<script>
+(() => {
+ const cfg=window.AWF_SUPABASE_CONFIG, status=document.getElementById('status');
+ if(!window.supabase||!cfg){status.textContent='Configuration could not load. Check your internet connection.';return;}
+ const db=window.supabase.createClient(cfg.url,cfg.publishableKey);
+ const $=id=>document.getElementById(id);
+ function say(msg,isError=false){status.textContent=msg;status.style.color=isError?'#a12b22':'var(--g2)';}
+ function showSession(session){
+   const on=!!session;
+   $('login-box').classList.toggle('hidden',on);$('signed-box').classList.toggle('hidden',!on);
+   $('upload-box').classList.toggle('hidden',!on);$('manage-box').classList.toggle('hidden',!on);
+   if(on){$('who').textContent=session.user.email||'Signed in';loadItems();}
+ }
+ async function refresh(){const {data}=await db.auth.getSession();showSession(data.session);}
+ $('login').onclick=async()=>{
+   const email=$('email').value.trim(),password=$('password').value;
+   if(!email||!password){say('Email aur password dono bharo.',true);return;}
+   $('login').disabled=true;say('Signing in…');
+   const {data,error}=await db.auth.signInWithPassword({email,password});
+   $('login').disabled=false;
+   if(error){say('Login nahi hua: '+error.message,true);return;}
+   showSession(data.session);say('Signed in. Ab media upload kar sakte ho.');
+ };
+ $('logout').onclick=async()=>{await db.auth.signOut();showSession(null);say('You are signed out.');};
+ $('publish').onclick=async()=>{
+   const file=$('file').files[0];
+   if(!file){say('Pehle photo ya video select karo.',true);return;}
+   if(file.size>50*1024*1024){say('File 50 MB se chhoti honi chahiye.',true);return;}
+   const {data:{session}}=await db.auth.getSession();
+   if(!session){showSession(null);say('Session expired. Dobara sign in karo.',true);return;}
+   const isVideo=file.type.startsWith('video/');
+   if(!isVideo&&!file.type.startsWith('image/')){say('Sirf image ya video upload kar sakte ho.',true);return;}
+   const ext=(file.name.split('.').pop()|| (isVideo?'mp4':'jpg')).toLowerCase().replace(/[^a-z0-9]/g,'');
+   const path='activities/'+Date.now()+'-'+crypto.randomUUID()+'.'+ext;
+   $('publish').disabled=true;say('Uploading… Please wait.');
+   const up=await db.storage.from('awf-media').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+   if(up.error){$('publish').disabled=false;say('Upload failed: '+up.error.message,true);return;}
+   const row={title:$('title').value.trim()||file.name,description:$('description').value.trim(),category:$('category').value,media_url:path,media_type:isVideo?'video':'image',published:true};
+   const ins=await db.from('awf_posts').insert(row);
+   if(ins.error){
+     await db.storage.from('awf-media').remove([path]);
+     $('publish').disabled=false;say('File upload ho gaya, lekin post save nahi hua: '+ins.error.message,true);return;
+   }
+   $('file').value='';$('title').value='';$('description').value='';
+   $('publish').disabled=false;say('Successfully published! Website gallery refresh karke check karo.');
+   loadItems();
+ };
+ async function loadItems(){
+   const box=$('items');box.textContent='Loading…';
+   const {data,error}=await db.from('awf_posts').select('id,title,category,created_at').order('created_at',{ascending:false}).limit(30);
+   if(error){box.textContent='Could not load posts: '+error.message;return;}
+   box.innerHTML='';
+   if(!data.length){box.textContent='Abhi koi upload nahi hua.';return;}
+   data.forEach(item=>{
+     const row=document.createElement('div');row.className='item';
+     const label=document.createElement('span');label.textContent=(item.title||'Untitled')+' · '+(item.category||'');
+     const del=document.createElement('button');del.textContent='Delete';del.className='danger';
+     del.onclick=async()=>{
+       if(!confirm('Is post ko delete karna hai?'))return;
+       const {error:delError}=await db.from('awf_posts').delete().eq('id',item.id);
+       if(delError){say('Delete failed: '+delError.message,true);return;}
+       say('Post deleted.');loadItems();
+     };
+     row.append(label,del);box.appendChild(row);
+   });
+ }
+ db.auth.onAuthStateChange((_event,session)=>showSession(session));
+ refresh();
+})();
+</script>
+</body></html>
