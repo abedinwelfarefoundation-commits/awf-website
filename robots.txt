@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://abedinwelfarefoundation-commits.github.io/awf-website/sitemap.xml
