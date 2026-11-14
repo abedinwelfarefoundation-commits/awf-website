@@ -97,7 +97,27 @@ section{padding:72px 0}.intro{display:grid;grid-template-columns:1.05fr .95fr;ga
 .awf-gallery-filter:hover,.awf-gallery-filter.active{background:var(--gold);color:#10251d}
 .awf-gallery-filter:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .gallery-card[hidden]{display:none!important}
-.az-credit{background:#f7fbf8;margin:0;padding:0 12px 28px;text-align:center;color:#315e50;font-size:12px;font-weight:650;letter-spacing:.02em}.az-credit span{color:#9a7620}\n</style>
+.az-credit{background:#f7fbf8;margin:0;padding:0 12px 28px;text-align:center;color:#315e50;font-size:12px;font-weight:650;letter-spacing:.02em}.az-credit span{color:#9a7620}\n
+/* Premium founder profile: preserves AWF emerald, white and gold identity */
+.founder-section{background:linear-gradient(180deg,#f8fbf8 0%,#eef5f0 100%)}
+.founder-premium{grid-template-columns:minmax(245px,.72fr) minmax(0,1.55fr);gap:26px;align-items:stretch}
+.founder-portrait{position:relative;min-height:420px;overflow:hidden;border-radius:24px;background:#073d32;box-shadow:var(--shadow)}
+.founder-portrait img{display:block;width:100%;height:100%;min-height:420px;object-fit:cover;object-position:center 24%}
+.founder-photo-label{position:absolute;left:16px;bottom:16px;padding:8px 12px;border:1px solid #d9bd69;border-radius:999px;background:#063a30eF;color:#f5d778;font-size:10px;font-weight:850;letter-spacing:.13em}
+.founder-premium-copy{padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;justify-content:center}
+.founder-premium-copy h3{font-size:clamp(24px,3vw,32px);line-height:1.18;margin:7px 0 14px}
+.founder-premium-copy p{line-height:1.72;margin:0 0 12px}
+.founder-premium-copy .founder-hindi{font-size:14px;color:#65766e}
+.founder-quote{padding-left:14px;border-left:3px solid var(--gold);color:var(--green);font-weight:650}
+.founder-pillars{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.founder-pillar{display:flex;gap:12px;align-items:flex-start;padding:16px;background:#eff7f1;border:1px solid #e0ece3;border-radius:16px}
+.founder-pillar .pillar-icon{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;background:#dceee2;color:#0b6048;font-size:22px;font-weight:800}
+.founder-pillar h4{margin:1px 0 5px;color:var(--green);font-size:16px}
+.founder-pillar p{margin:0;color:#53665c;font-size:12px;line-height:1.55}
+@media(max-width:800px){.founder-premium{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:16px}.founder-portrait,.founder-portrait img{min-height:360px}.founder-pillars{grid-template-columns:1fr}}
+@media(max-width:600px){.founder-premium{grid-template-columns:1fr;gap:16px}.founder-portrait{min-height:0;height:auto;max-height:440px;aspect-ratio:4/5}.founder-portrait img{min-height:0;height:100%;object-position:center 22%}.founder-premium-copy{padding:22px}.founder-pillars{grid-template-columns:1fr}.founder-pillar{padding:14px}}
+
+</style>
 </head>
 <body>
 <header><div class="wrap nav">
@@ -157,7 +177,7 @@ section{padding:72px 0}.intro{display:grid;grid-template-columns:1.05fr .95fr;ga
   </div>
 </section>
 
-<section id="founder"><div class="wrap"><div class="section-head"><div class="kicker">Leadership · नेतृत्व</div><h2>Meet Our Founder</h2></div><div class="founder"><div class="founder-mark"><img src="assets/awf-logo.png" alt="Original Abedin Welfare Foundation logo"></div><div class="founder-copy"><div class="role">FOUNDER</div><h3>Mohammad Zainul Abedin</h3><p>Abedin Welfare Foundation was started with a commitment to support underprivileged children, families and communities through education, food assistance, healthcare support and awareness activities.</p><p lang="hi">इस पहल की शुरुआत जरूरतमंद बच्चों, परिवारों और समुदायों को शिक्षा, भोजन सहायता, स्वास्थ्य सहयोग और जागरूकता गतिविधियों के माध्यम से सहयोग देने के संकल्प के साथ की गई।</p><p><em>“Small acts of kindness can create meaningful change.”</em></p></div></div></div></section>
+<section id="founder" class="founder-section"><div class="wrap"><div class="section-head"><div class="kicker">Leadership · नेतृत्व</div><h2>Meet Our Founder</h2></div><div class="founder founder-premium"><div class="founder-portrait"><img src="assets/awf-founder.jpg" alt="Mohammad Zainul Abedin, Founder of Abedin Welfare Foundation" loading="lazy"></div><div class="founder-copy founder-premium-copy"><div class="role">FOUNDER</div><h3>Mohammad Zainul Abedin</h3><p class="founder-intro">Abedin Welfare Foundation was started with a commitment to support underprivileged children, families and communities through education, food assistance, healthcare support and awareness activities.</p><p class="founder-hindi" lang="hi">इस पहल की शुरुआत जरूरतमंद बच्चों, परिवारों और समुदायों को शिक्षा, भोजन सहायता, स्वास्थ्य सहयोग और जागरूकता गतिविधियों के माध्यम से सहयोग देने के संकल्प के साथ की गई।</p><p class="founder-quote"><em>“Small acts of kindness can create meaningful change.”</em></p><div class="founder-pillars"><article class="founder-pillar"><span class="pillar-icon" aria-hidden="true">◎</span><div><h4>Our Vision</h4><p>A society where every child gets an opportunity to learn and every needy family receives support with dignity.</p></div></article><article class="founder-pillar"><span class="pillar-icon" aria-hidden="true">✦</span><div><h4>Our Mission</h4><p>To make education, food assistance, healthcare and community welfare accessible to people in need.</p></div></article></div></div></div></div></section>
 <section class="donate" id="donate"><div class="wrap donate-layout"><div class="donate-copy"><div class="kicker">Support our work · सहयोग करें</div><h2>Support Our Mission</h2><p>Your voluntary contribution can help support education, food assistance, healthcare and community welfare activities.</p><p lang="hi">आपका स्वैच्छिक आर्थिक सहयोग शिक्षा, भोजन सहायता, स्वास्थ्य और सामाजिक कल्याण की गतिविधियों में मदद कर सकता है।</p><div class="donate-points"><span>Education</span><span>Food Support</span><span>Healthcare</span><span>Community Welfare</span></div><p>Scan the original BharatPe QR code with any UPI app, or tap Donate Now to open your UPI payment app. Verify the payee name and UPI ID before confirming.</p><div class="donate-now-wrap"><a class="donate-now-btn" href="upi://pay?pa=BHARATPE2N0V0N7N1M57321%40unitype&pn=MOHAMMAD%20ZAINUL%20ABEDIN&cu=INR&tn=Donation%20to%20Abedin%20Welfare%20Foundation" aria-label="Donate now using UPI">Donate Now <span aria-hidden="true">&nbsp;→</span></a></div></div><div class="donate-card donation-poster-card">
   <img class="donation-poster" src="assets/awf-donation-poster.jpg" alt="AWF Support Our Mission donation poster with BharatPe UPI QR code">
 </div></div></section>
