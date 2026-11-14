@@ -174,60 +174,126 @@ section{padding:72px 0}.intro{display:grid;grid-template-columns:1.05fr .95fr;ga
   const status=document.getElementById('awf-gallery-status');
   const grid=document.getElementById('awf-gallery-grid');
   const filters=document.getElementById('awf-gallery-filters');
-  if(!window.supabase || !window.AWF_SUPABASE_CONFIG){status.textContent='Activity gallery is being configured.';return;}
-  const client=window.supabase.createClient(AWF_SUPABASE_CONFIG.url,AWF_SUPABASE_CONFIG.publishableKey);
+  let selectedCategory='All Activities';
+
+  function applyFilter(category){
+    selectedCategory=category;
+    const cards=[...grid.querySelectorAll('.gallery-card')];
+    let visible=0;
+    cards.forEach(card=>{
+      const match=category==='All Activities'||card.dataset.category===category;
+      card.hidden=!match;
+      if(match)visible++;
+    });
+    if(cards.length){
+      status.textContent=visible
+        ? visible+' '+(category==='All Activities'?'published update':'update')+(visible===1?'':'s')+' · '+(category==='All Activities'?'All Activities':category)
+        : 'No activities published in this category yet.';
+    }
+  }
+
+  // Filters work immediately, even while the gallery is still loading.
+  filters.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-category]');
+    if(!button)return;
+    filters.querySelectorAll('.awf-gallery-filter').forEach(b=>{
+      const active=b===button;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-pressed',String(active));
+    });
+    applyFilter(button.dataset.category);
+  });
+
+  if(!window.supabase || !window.AWF_SUPABASE_CONFIG){
+    status.textContent='Gallery setup could not load. Please check supabase-config.js and the Supabase library.';
+    return;
+  }
+
+  const client=window.supabase.createClient(
+    window.AWF_SUPABASE_CONFIG.url,
+    window.AWF_SUPABASE_CONFIG.publishableKey
+  );
+
   try{
-    const {data,error}=await client.from('awf_posts').select('id,title,description,category,media_url,media_type,created_at').eq('published',true).order('created_at',{ascending:false}).limit(60);
-    if(error) throw error;
-    if(!data || !data.length){status.textContent='New activity photos and videos will appear here soon.';return;}
-    let shown=0;
+    status.textContent='Connecting to activity gallery…';
+    const request=client.from('awf_posts')
+      .select('id,title,description,category,media_url,media_type,created_at')
+      .eq('published',true)
+      .order('created_at',{ascending:false})
+      .limit(60);
+
+    const result=await Promise.race([
+      request,
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error('Connection timed out. Check internet and Supabase project status.')),15000))
+    ]);
+    if(result.error) throw result.error;
+    const data=result.data||[];
+    if(!data.length){
+      status.textContent='No published activities found yet. Publish an activity from the AWF admin page.';
+      return;
+    }
+
     data.forEach(item=>{
-      let url='';
-      const mediaPath=String(item.media_url||'');
-      if(/^https?:\\/\\//i.test(mediaPath)){
-        url=mediaPath;
-      }else{
+      const mediaPath=String(item.media_url||'').trim();
+      if(!mediaPath)return;
+      let url=mediaPath;
+      if(!/^https?:\/\//i.test(mediaPath)){
         const publicResult=client.storage.from('awf-media').getPublicUrl(mediaPath);
-        url=publicResult && publicResult.data ? publicResult.data.publicUrl : '';
+        url=publicResult?.data?.publicUrl||'';
       }
       if(!url)return;
-      const card=document.createElement('article');card.className='card gallery-card';
-      card.dataset.category=item.category||'';
+
+      const card=document.createElement('article');
+      card.className='card gallery-card';
+      card.dataset.category=String(item.category||'').trim();
       let media;
       if(item.media_type==='video'){
-        media=document.createElement('video');media.controls=true;media.preload='metadata';
+        media=document.createElement('video');
+        media.controls=true;
+        media.preload='metadata';
       }else{
-        media=document.createElement('img');media.loading='lazy';media.alt=item.title||'AWF activity photo';
+        media=document.createElement('img');
+        media.loading='lazy';
+        media.alt=item.title||'AWF activity photo';
       }
-      media.className='awf-gallery-media';media.src=url;
-      media.addEventListener('error',()=>{card.dataset.mediaError='true';media.style.display='none';});
+      media.className='awf-gallery-media';
+      media.src=url;
+      media.addEventListener('error',()=>{
+        card.dataset.mediaError='true';
+        media.style.display='none';
+      });
       card.appendChild(media);
-      if(item.title){const title=document.createElement('div');title.className='awf-gallery-card-title';title.textContent=item.title;card.appendChild(title);}
-      if(item.description){const desc=document.createElement('p');desc.className='awf-gallery-card-desc';desc.textContent=item.description;card.appendChild(desc);}
-      if(item.category){const tag=document.createElement('span');tag.className='awf-gallery-tag';tag.textContent=item.category;card.appendChild(tag);}
-      grid.appendChild(card);shown++;
+
+      if(item.title){
+        const title=document.createElement('div');
+        title.className='awf-gallery-card-title';
+        title.textContent=item.title;
+        card.appendChild(title);
+      }
+      if(item.description){
+        const desc=document.createElement('p');
+        desc.className='awf-gallery-card-desc';
+        desc.textContent=item.description;
+        card.appendChild(desc);
+      }
+      if(item.category){
+        const tag=document.createElement('span');
+        tag.className='awf-gallery-tag';
+        tag.textContent=item.category;
+        card.appendChild(tag);
+      }
+      grid.appendChild(card);
     });
-    const cards=[...grid.querySelectorAll('.gallery-card')];
-    function applyFilter(category){
-      let visible=0;
-      cards.forEach(card=>{
-        const match=category==='All Activities'||card.dataset.category===category;
-        card.hidden=!match;
-        if(match)visible++;
-      });
-      status.textContent=visible?visible+' '+(category==='All Activities'?'published update':'update')+(visible===1?'':'s')+' · '+(category==='All Activities'?'All Activities':category):'No activities published in this category yet.';
+
+    if(!grid.querySelector('.gallery-card')){
+      status.textContent='Published posts were found, but their media links are empty. Please check the media_url saved for each post.';
+      return;
     }
-    filters.addEventListener('click',event=>{
-      const button=event.target.closest('button[data-category]');
-      if(!button)return;
-      filters.querySelectorAll('.awf-gallery-filter').forEach(b=>{
-        const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));
-      });
-      applyFilter(button.dataset.category);
-    });
-    if(!shown)status.textContent='Published activities could not be loaded. Please check the awf-media bucket and media URLs.';
-    else applyFilter('All Activities');
-  }catch(err){console.error(err);status.textContent='Activity gallery is temporarily unavailable. '+(err.message||'');}
+    applyFilter(selectedCategory);
+  }catch(err){
+    console.error('AWF gallery error:',err);
+    status.textContent='Gallery load failed: '+(err.message||'Unknown error')+'. Check Supabase table access, public awf-media bucket, and internet connection.';
+  }
 })();
 </script>
 
